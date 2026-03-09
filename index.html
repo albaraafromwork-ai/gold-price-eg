@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسعار الذهب والعملات بمصر</title>
+    <style>
+        :root { --main-bg: #0f172a; --gold: #fbbf24; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--main-bg); color: white; margin: 0; padding: 10px; }
+        .container { max-width: 450px; margin: auto; }
+        .header { text-align: center; font-size: 22px; font-weight: bold; color: var(--gold); padding: 20px 0; }
+        
+        /* تصميم الصندوق ليكون مطابقاً لصورك */
+        .widget-wrapper { 
+            background: #1e293b; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+        
+        /* الرابط البرمجي لبيانات الصاغة */
+        iframe { width: 100%; border: none; display: block; }
+        
+        .footer { text-align: center; font-size: 11px; color: #64748b; margin-top: 10px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">أسعار الذهب والعملات الآن بمصر</div>
+
+    <div class="widget-wrapper">
+        <iframe src="https://egrates.com/widgets/gold_egypt_dark" height="520"></iframe>
+    </div>
+
+    <div class="widget-wrapper">
+        <div style="text-align: center; color: #94a3b8; font-size: 14px; padding: 10px 0 5px 0;">أسعار العملات الرسمية</div>
+        <iframe src="https://egrates.com/widgets/currency_egypt_dark" height="380"></iframe>
+    </div>
+
+    <div class="footer">
+        تحديث تلقائي لحظي من قلب سوق الصاغة المصري<br>
+        جميع الأسعار تشمل تحديثات "دولار الصاغة" الحالية.
+    </div>
+</div>
+
+</body>
+</html>
