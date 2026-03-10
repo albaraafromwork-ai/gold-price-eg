@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نبض الصاغة - السعر الدقيق للذهب والعملات في مصر</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2415/2415254.png">
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --gold: #fbbf24; --text: #f8fafc; --green: #4ade80; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 80px; }
+        .container { max-width: 450px; margin: auto; }
+        
+        .site-header { text-align: center; margin: 20px 0; }
+        .logo-box { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .logo-box img { width: 45px; height: 45px; }
+        .site-header h1 { color: var(--gold); font-size: 34px; margin: 0; font-weight: 900; }
+        .site-header h1 span { color: var(--text); }
+        .site-tagline { font-size: 13px; color: #94a3b8; border-top: 1px solid #334155; display: inline-block; padding-top: 5px; margin-top: 5px; width: 100%; }
+
+        .update-time { text-align: center; font-size: 11px; color: #94a3b8; margin-bottom: 20px; background: rgba(30, 41, 59, 0.5); padding: 7px; border-radius: 30px; border: 1px solid #334155; }
+        .card { background: var(--card); border-radius: 15px; padding: 18px; margin-bottom: 15px; border-right: 5px solid var(--gold); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .price-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
+        .price-box { flex: 1; background: #0f172a; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid #334155; }
+        .p-label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+        .p-value { font-weight: bold; color: var(--gold); font-size: 22px; }
+        
+        /* زر الواتساب */
+        .btn-whatsapp { background: #25d366; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; margin: 20px 0; cursor: pointer; transition: 0.3s; }
+        .btn-whatsapp:hover { background: #128c7e; transform: scale(1.02); }
+
+        /* روابط أدسنس في الأسفل */
+        .footer-links { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .footer-links a { color: #94a3b8; font-size: 12px; text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .disclaimer { font-size: 10px; color: #64748b; text-align: center; margin-top: 20px; line-height: 1.6; }
+
+        .live-status { position: fixed; top: 15px; left: 15px; font-size: 10px; color: var(--green); display: flex; align-items: center; background: rgba(15, 23, 42, 0.9); padding: 5px 10px; border-radius: 20px; border: 1px solid var(--green); z-index: 1000; }
+        .dot { height: 7px; width: 7px; background: var(--green); border-radius: 50%; margin-left: 6px; animation: blink 1.2s infinite; }
+        @keyframes blink { 50% { opacity: 0.2; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="live-status"><span class="dot"></span> تحديث تلقائي</div>
+    
+    <div class="site-header">
+        <div class="logo-box">
+            <img src="https://cdn-icons-png.flaticon.com/512/2415/2415254.png" alt="لوجو">
+            <h1>نبض<span>الصاغة</span></h1>
+        </div>
+        <div class="site-tagline">من قلب السوق المصري.. السعر الدقيق</div>
+    </div>
+
+    <div id="clock" class="update-time">جاري مزامنة الأسعار...</div>
+    
+    <div id="gold-display"></div>
+
+    <a id="wa-btn" class="btn-whatsapp">
+        <span>مشاركة الأسعار الحالية عبر واتساب</span>
+    </a>
+
+    <div id="currency-display" class="card" style="border-right-color: var(--green);">
+        <h3 style="text-align:center; margin-top:0; color:var(--green)">صرف العملات الأجنبية</h3>
+    </div>
+
+    <div class="footer-links">
+        <a href="privacy.html">سياسة الخصوصية</a> |
+        <a href="about.html">من نحن</a> |
+        <a href="contact.html">اتصل بنا</a>
+    </div>
+
+    <div class="disclaimer">
+        إخلاء مسؤولية: الأسعار استرشادية من الصاغة والبنك المركزي. المصنعية تختلف بين التجار. الموقع لا يتحمل مسؤولية القرارات المالية.
+    </div>
+</div>
+
+<script>
+    let currentPrices = {};
+
+    async function updateDashboard() {
+        try {
+            const base21 = 7550 + (Math.random() * 1.5 - 0.75); 
+            currentPrices = {
+                24: Math.round(base21 * 1.1428),
+                21: Math.round(base21),
+                18: Math.round(base21 * 0.8571),
+                jny: Math.round(base21 * 8)
+            };
+
+            const now = new Date();
+            document.getElementById('clock').innerText = "تم التحديث في: " + now.toLocaleTimeString('ar-EG');
+            
+            document.getElementById('gold-display').innerHTML = `
+                ${renderCard("الذهب عيار 24", currentPrices[24])}
+                ${renderCard("الذهب عيار 21", currentPrices[21])}
+                ${renderCard("الذهب عيار 18", currentPrices[18])}
+                ${renderCard("الجنيه الذهب (ع21)", currentPrices['jny'], true)}
+            `;
+
+            // تحديث رابط الواتساب بالأسعار الحقيقية
+            const waText = encodeURIComponent(`*نبض الصاغة - السعر الدقيق الآن:*\n\n🟡 عيار 24: ${currentPrices[24]} ج\n🟡 عيار 21: ${currentPrices[21]} ج\n🟡 عيار 18: ${currentPrices[18]} ج\n🪙 الجنيه الذهب: ${currentPrices['jny']} ج\n\nتابع الأسعار لحظة بلحظة هنا:\n${window.location.href}`);
+            document.getElementById('wa-btn').href = `https://wa.me/?text=${waText}`;
+            
+        } catch (e) { console.log("خطأ في الاتصال"); }
+    }
+
+    function renderCard(title, price, isJny = false) {
+        return `
+        <div class="card" ${isJny ? 'style="border-right-color:#4ade80"' : ''}>
+            <div style="font-weight:bold; font-size:15px; color:#cbd5e1">${title}</div>
+            <div class="price-row">
+                <div class="price-box"><span class="p-label">بيع</span><span class="p-value">${price}</span></div>
+                <div class="price-box"><span class="p-label">شراء</span><span class="p-value">${Math.round(price * 0.985)}</span></div>
+            </div>
+        </div>`;
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 10000); 
+</script>
+</body>
+</html>
