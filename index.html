@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>أسعار الذهب والعملات</title>
+
+<style>
+body{
+font-family: Arial;
+background:#f4f4f4;
+text-align:center;
+direction:rtl;
+}
+
+.container{
+background:white;
+padding:20px;
+margin:40px auto;
+width:350px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.price{
+font-size:22px;
+margin:10px;
+}
+
+h1{
+color:#c9a227;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>أسعار العملات</h1>
+
+<div class="price">الدولار: <span id="usd">...</span> جنيه</div>
+<div class="price">اليورو: <span id="eur">...</span> جنيه</div>
+<div class="price">الريال السعودي: <span id="sar">...</span> جنيه</div>
+
+<h1>أسعار الذهب</h1>
+
+<div class="price">ذهب عيار 24: <span id="gold24">...</span></div>
+<div class="price">ذهب عيار 21: <span id="gold21">...</span></div>
+<div class="price">ذهب عيار 18: <span id="gold18">...</span></div>
+
+</div>
+
+<script>
+
+async function getCurrency(){
+
+let response = await fetch("https://open.er-api.com/v6/latest/USD");
+let data = await response.json();
+
+let egp = data.rates.EGP;
+
+document.getElementById("usd").innerText = egp.toFixed(2);
+document.getElementById("eur").innerText = (egp / data.rates.EUR).toFixed(2);
+document.getElementById("sar").innerText = (egp / data.rates.SAR).toFixed(2);
+
+}
+
+async function getGold(){
+
+let response = await fetch("https://api.metals.live/v1/spot/gold");
+let data = await response.json();
+
+let goldPrice = data[0].price;
+
+let gram = goldPrice / 31.1;
+
+document.getElementById("gold24").innerText = gram.toFixed(2)+" $";
+document.getElementById("gold21").innerText = (gram*0.875).toFixed(2)+" $";
+document.getElementById("gold18").innerText = (gram*0.75).toFixed(2)+" $";
+
+}
+
+getCurrency();
+getGold();
+
+setInterval(()=>{
+getCurrency();
+getGold();
+},60000);
+
+</script>
+
+</body>
+</html>
