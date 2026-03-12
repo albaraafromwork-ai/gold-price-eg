@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>نبض الصاغة | أسعار الذهب والعملات في مصر</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2933/2933116.png">
+    <link rel="canonical" href="https://nabdelsagha.github.io/" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body{ font-family:Arial; background:#0d1b2a; color:white; margin:0; direction:rtl; text-align:center; }
+        header{ background:#1b263b; padding:15px; display:flex; justify-content:center; align-items:center; gap:10px; font-size:24px; color:#ffd166; }
+        .logo{ width:30px; }
+        .container{ max-width:420px; margin:auto; padding:20px; }
+        .live{ display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:15px; }
+        .dot{ width:10px; height:10px; background:#00ff7f; border-radius:50%; animation:pulse 1.5s infinite; }
+        @keyframes pulse{ 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+        .goldBox{ background:#1b263b; padding:15px; border-radius:10px; margin-bottom:12px; border-right: 4px solid #ffd166; }
+        .goldTitle{ color:#ffd166; margin-bottom:10px; font-size:18px; font-weight:bold; }
+        .sell{color:#ff6b6b; font-size: 20px;}
+        .buy{color:#06d6a0; font-size: 20px;}
+        .card{ background:#1b263b; padding:18px; border-radius:12px; margin-top:20px; }
+        .price{ display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #2d3e5e; }
+        button{ background:#25D366; border:none; padding:12px 25px; border-radius:25px; color:white; cursor:pointer; margin-top:15px; font-weight:bold; }
+        footer{ margin-top:30px; background:#1b263b; padding:15px; font-size: 14px; }
+        footer a{ color:#ffd166; margin:10px; text-decoration:none; }
+    </style>
+</head>
+<body>
+    <header><img class="logo" src="https://cdn-icons-png.flaticon.com/512/2933/2933116.png"> نبض الصاغة </header>
+    <div class="container">
+        <div class="live"><div class="dot"></div><span>تحديث مباشر لعام 2026</span></div>
+        <div id="gold-list">
+            </div>
+        <div class="goldBox"><div class="goldTitle">الجنيه الذهب</div><div id="pound" style="font-size:22px; color:#ffd166;"></div></div>
+        <button onclick="share()">مشاركة السعر الآن 📱</button>
+        <div class="card">
+            <h3 style="color:#ffd166">أسعار العملات (رسمي)</h3>
+            <div id="currency-list"></div>
+        </div>
+        <div class="card"><h3 style="color:#ffd166">حركة عيار 21</h3><canvas id="goldChart"></canvas></div>
+    </div>
+    <footer>
+        <a href="about.html">من نحن</a> | <a href="privacy.html">الخصوصية</a> | <a href="contact.html">اتصل بنا</a>
+        <br><br>© 2026 نبض الصاغة
+    </footer>
+
+<script>
+    let usd=0; let chart;
+    async function update(){
+        try {
+            // جلب العملات
+            let r=await fetch("https://open.er-api.com/v6/latest/USD");
+            let d=await r.json();
+            usd=d.rates.EGP;
+            
+            // جلب الذهب
+            let gr=await fetch("https://api.gold-api.com/price/XAU");
+            let gd=await gr.json();
+            
+            // الحسبة مع معامل السوق المصري لـ 2026
+            let gramEGP = (gd.price / 31.1035) * usd * 1.14; 
+            let g21 = gramEGP * 0.875;
+
+            document.getElementById("gold-list").innerHTML = `
+                ${renderGold("عيار 24", gramEGP)}
+                ${renderGold("عيار 21", g21)}
+                ${renderGold("عيار 18", gramEGP * 0.75)}
+            `;
+            document.getElementById("pound").innerText = Math.round(g21 * 8) + " ج.م";
+            document.getElementById("currency-list").innerHTML = `
+                <div class="price"><span>الدولار 🇺🇸</span><span>${usd.toFixed(2)}</span></div>
+                <div class="price"><span>الريال 🇸🇦</span><span>${(usd/d.rates.SAR).toFixed(2)}</span></div>
+            `;
+            updateChart(g21);
+        } catch(e) { console.log("خطأ في التحديث"); }
+    }
+    function renderGold(t, p){
+        return `<div class="goldBox"><div class="goldTitle">${t}</div><div class="sell">بيع: ${Math.round(p+30)}</div><div class="buy">شراء: ${Math.round(p-30)}</div></div>`;
+    }
+    function updateChart(p){
+        if(!chart){
+            chart=new Chart(document.getElementById("goldChart"),{type:"line",data:{labels:[],datasets:[{label:"عيار 21",data:[],borderColor:"#ffd166"}]}});
+        }
+        chart.data.labels.push(new Date().toLocaleTimeString());
+        chart.data.datasets[0].data.push(p);
+        if(chart.data.labels.length>10){ chart.data.labels.shift(); chart.data.datasets[0].data.shift(); }
+        chart.update();
+    }
+    function share(){
+        let text="تابع أسعار الذهب لحظة بلحظة: https://nabdelsagha.github.io/";
+        navigator.share ? navigator.share({title:"نبض الصاغة", text:text}) : window.open("https://wa.me/?text="+encodeURIComponent(text));
+    }
+    update(); setInterval(update, 60000);
+</script>
+</body>
+</html>
