@@ -190,7 +190,7 @@ text-decoration:none;
 
 </div>
 
-<button onclick="share()">مشاركة الموقع والأسعار</button>
+<button onclick="sharePage()" style="width: 100%; padding: 15px; background: #ffd166; color: #0d1b2a; border: none; border-radius: 10px; font-weight: bold; margin: 20px 0; cursor: pointer;">مشاركة الموقع والأسعار ✨</button>
 
 <div class="card">
 
@@ -406,6 +406,23 @@ await gold()
 update()
 
 setInterval(update,60000)
+function sharePage() {
+    // الرابط القصير والاحترافي
+    const shareUrl = "https://nabdelsagha.github.io/"; 
+    const shareText = "أسعار الذهب والعملات لحظة بلحظة في مصر.. تابع نبض الصاغة من هنا: \n";
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'نبض الصاغة',
+            text: shareText,
+            url: shareUrl
+        }).catch(console.error);
+    } else {
+        // لو الموبايل قديم، يفتح واتساب بالرابط القصير فوراً
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + shareUrl)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+}
 
 </script>
 
