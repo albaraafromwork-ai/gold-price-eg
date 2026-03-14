@@ -247,6 +247,22 @@ text-decoration:none;
     </ul>
     <p style="font-size: 14px; color: #aaa; text-align: center;">* الأسعار الواردة استرشادية وتختلف قليلاً حسب المنطقة والمصنعية.</p>
 </div>
+<div class="card" style="margin-top: 20px; text-align: right;">
+    <h3 style="color:#ffd166; border-bottom: 1px solid #333; padding-bottom: 10px;">آخر أخبار الذهب</h3>
+    
+    <div style="margin-top: 15px;">
+        <h4 style="color: #fff; margin-bottom: 8px;">توقعات أسعار الذهب مع نهاية رمضان وعيد الفطر 2026</h4>
+        <p style="color: #ccc; font-size: 14px; line-height: 1.6;">
+            مع اقتراب عيد الفطر، يزداد التساؤل: هل نشتري الذهب الآن؟ 
+            في "نبض الصاغة" نتوقع زيادة في الطلب على عيار 21 نتيجة موسم الخطوبات.. 
+            <span style="color: #ffd166; cursor: pointer;" onclick="toggleNews()">إقرأ المزيد</span>
+        </p>
+        
+        <div id="full-news" style="display: none; color: #ccc; font-size: 14px; line-height: 1.6; margin-top: 10px; border-top: 1px dashed #444; padding-top: 10px;">
+            <p>من المتوقع أن تشهد الصاغة المصرية حركة نشطة جداً خلال أسبوع العيد. نصيحتنا للمشترين هي الشراء قبل ليلة العيد لتجنب الزحام وتذبذب المصنعية. كما أن استقرار سعر الأونصة عالمياً حالياً يعتبر فرصة جيدة لمن يرغب في الادخار طويل الأمد.</p>
+        </div>
+    </div>
+</div>
 
 <footer>
 
@@ -438,6 +454,14 @@ function sharePage() {
         // لو الموبايل قديم، يفتح واتساب بالرابط القصير فوراً
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + shareUrl)}`;
         window.open(whatsappUrl, '_blank');
+    }
+}
+function toggleNews() {
+    const newsDiv = document.getElementById('full-news');
+    if (newsDiv.style.display === "none") {
+        newsDiv.style.display = "block";
+    } else {
+        newsDiv.style.display = "none";
     }
 }
 
